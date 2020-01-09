@@ -1,0 +1,70 @@
+.flowSlider {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.flowSlider .flowTitle {
+  font-size: 26px;
+  padding: 8px 0 8px 0;
+  text-align: left;
+  color: #ffffff;
+}
+
+.flowSlider .flowContent {
+  position: relative;
+}
+
+.flowSlider .flowContent .flowItems {
+  display: flex;
+  align-items: center;
+  transition: all 0.5s ease-in-out;
+}
+
+.flowSlider .flowContent .flowItems .flowItem {
+  display: inline-block;
+  transition: transform-origin 0.01s ease-in-out, transform 0.2s ease-in-out;
+  /* transition: transform-origin 0s ease-in-out; */
+  /* transition-property: transform, transform-origin; */
+  overflow: hidden;
+  flex: initial;
+  flex-grow: 0;
+  flex-shrink: 0;
+}
+
+.flowSlider .flowControl {
+  outline: none;
+  height: 100%;
+  width: 40px;
+  position: absolute;
+  top: 0;
+  border: none;
+  background-color: rgba(0, 0, 0, 0.5);
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 24px;
+  font-weight: bold;
+  z-index: 1;
+  text-shadow: 0px 0px 5px rgba(0, 0, 0, 0.44);
+  transition: all 0.3s ease-in-out;
+}
+
+.flowSlider .flowControl:hover {
+  opacity: 0.8;
+}
+
+.flowSlider .flowPrev {
+  left: -40px;
+}
+
+.flowSlider .flowContent:hover .flowPrev {
+  left: 0;
+}
+
+.flowSlider .flowNext {
+  right: -40px;
+}
+
+.flowSlider .flowContent:hover .flowNext {
+  right: 0;
+}
