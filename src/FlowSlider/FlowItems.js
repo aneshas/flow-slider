@@ -36,11 +36,8 @@ export const FlowItems = ({
       const firstItemIndex =
         Math.floor(selectedIndex / itemsPerPage) * itemsPerPage;
 
-      const isFirstItem = current => current === firstItemIndex;
-      const isLastItem = current =>
-        current === firstItemIndex + itemsPerPage - 1;
-
       const isFirstItemSelected = () => firstItemIndex === selectedIndex;
+
       const isLastItemSelected = () =>
         firstItemIndex + itemsPerPage - 1 === selectedIndex;
 
@@ -56,23 +53,26 @@ export const FlowItems = ({
         const style = { ...flowContext.itemBaseStyle };
         let translateX = 0;
 
-        if (isFirstItem(index)) style.transformOrigin = "left";
-        if (isLastItem(index)) style.transformOrigin = "right";
-
         // TODO - Set a class to all affected items eg. pre-selected selected post-selected
         if (isBeforeSelectedItem(index) && !isFirstItemSelected()) {
           translateX = isLastItemSelected()
             ? -translateAmount * 2
             : -translateAmount;
-          // style.opacity = 0.7;
         } else if (isAfterSelectedItem(index) && !isLastItemSelected()) {
           translateX = isFirstItemSelected()
             ? translateAmount * 2
             : translateAmount;
-          // style.opacity = 0.7;
         } else if (isSelectedItem(index)) {
           style.transform = `scale(${scaleFactor})`;
-        }
+
+          if (isFirstItemSelected()) {
+            style.transform += ` translateX(${translateAmount /
+              scaleFactor}px)`;
+          } else if (isLastItemSelected()) {
+            style.transform += ` translateX(${-translateAmount /
+              scaleFactor}px)`;
+          }
+        } 
 
         if (translateX !== 0) style.transform = `translateX(${translateX}px)`;
 

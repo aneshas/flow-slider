@@ -3,90 +3,9 @@ import { FlowItems } from "./FlowItems";
 import { FlowPrev, FlowNext } from "./FlowControls";
 import { LoadingPlaceholder } from "./LoadingPlaceholder";
 import { FlowContext } from "./FlowContext";
-
-// import { FlowState } from "./flow-state";
-// import { flowReducer } from "./flow-reducer";
-
-const FlowState = Object.freeze({
-  NEED_MORE: "need_more",
-  FETCHING: "fetching",
-  IDLE: "idle",
-  COMPLETED: "completed"
-});
-
-const flowReducer = (state, action) => {
-  const checkThreshold = (itemsWidth, itemsOffset) => {
-    if (
-      state.current === FlowState.COMPLETED ||
-      state.current === FlowState.FETCHING
-    )
-      return state;
-
-    const x = Math.abs(itemsOffset) + state.contentWidth;
-
-    if (itemsWidth - x < state.contentWidth + state.threshold) {
-      console.log("time to load more");
-
-      return {
-        ...state,
-        current: FlowState.NEED_MORE
-      };
-    }
-
-    return state;
-  };
-
-  const move = (itemsWidth, nextOffset) => ({
-    ...checkThreshold(itemsWidth, nextOffset),
-    itemsOffset: nextOffset
-  });
-
-  switch (action.type) {
-    case "CONTENT_RESIZED":
-      return {
-        ...state,
-        contentWidth: action.contentWidth
-      };
-
-    case "CONTENT_REQUESTED":
-      if (state.current !== FlowState.NEED_MORE) return state;
-
-      return {
-        ...state,
-        current: FlowState.FETCHING
-      };
-
-    case "BATCH_LOADED":
-      return {
-        ...state,
-        current: FlowState.IDLE
-      };
-
-    case "COMPLETE":
-      return {
-        ...state,
-        current: FlowState.COMPLETED
-      };
-
-    case "MOVE_NEXT":
-      const newOffset = state.itemsOffset - state.contentWidth;
-      const nextOffset =
-        Math.abs(newOffset) >= action.itemsWidth
-          ? state.itemsOffset
-          : newOffset;
-
-      return move(action.itemsWidth, nextOffset);
-
-    case "MOVE_PREV":
-      const offset = state.itemsOffset + state.contentWidth;
-      const prevOffset = offset >= 0 ? 0 : offset;
-
-      return move(action.itemsWidth, prevOffset);
-
-    default:
-      return state;
-  }
-};
+import { FlowState } from "./FlowState";
+import { flowReducer } from "./reducers";
+import { useElementWidth } from "./hooks";
 
 export const FlowSlider = ({
   title,
@@ -96,7 +15,7 @@ export const FlowSlider = ({
   loaderItem = "loading...",
   itemsPerPage = 2,
   gutter = 2,
-  scaleFactor = 1.5,
+  scaleFactor = 1.3,
   children = []
 }) => {
   const ref = useRef();
@@ -109,7 +28,7 @@ export const FlowSlider = ({
     threshold: threshold
   });
 
-  const [contentWidth, contentRef] = useContentWidth();
+  const [contentWidth, contentRef] = useElementWidth();
 
   useEffect(() => {
     dispatch({
@@ -202,22 +121,4 @@ export const FlowSlider = ({
       </div>
     </FlowContext.Provider>
   );
-};
-
-const useContentWidth = () => {
-  const [width, setWidth] = useState(0);
-
-  const ref = useRef();
-
-  useEffect(() => {
-    const setContanerWidth = () => setWidth(ref.current.offsetWidth);
-
-    setContanerWidth();
-
-    window.addEventListener("resize", setContanerWidth);
-
-    return () => window.removeEventListener("resize", setContanerWidth);
-  }, [ref]);
-
-  return [width, ref];
 };

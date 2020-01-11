@@ -6,10 +6,6 @@
   padding: 12px 0 16px 4px;
 }
 
-.flowSlider .flowContent .flowItems .flowItem {
-  /* flex-basis: calc(25% - 4px); */
-}
-
 .flowSlider .flowContent .flowItems .flowItem img {
   width: 100%;
 }

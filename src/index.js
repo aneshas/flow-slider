@@ -107,6 +107,7 @@ function App() {
         loadMore={loadMore}
         title={<h4>Trending Now</h4>}
         itemsPerPage={6}
+        gutter={8}
       >
         {items.map(i => (
           <FlowItem key={i}>
