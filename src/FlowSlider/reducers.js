@@ -5,7 +5,8 @@ export const flowReducer = (state, action) => {
     case "CONTENT_RESIZED":
       return {
         ...state,
-        contentWidth: action.contentWidth
+        contentWidth: action.contentWidth,
+        itemsOffset: 0
       };
 
     case "CONTENT_REQUESTED":

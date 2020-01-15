@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ReactDOM from "react-dom";
-import FlowSlider, { FlowItem } from "./FlowSlider";
+import FlowSlider, { FlowItem, FlowItemFocus } from "./FlowSlider";
 
 import "./styles.css";
 import "./FlowSlider/default-theme.css";
@@ -96,7 +96,9 @@ function App() {
               src={`https://picsum.photos/297/167/?${i}b`}
               alt="placeholder"
             />
-            {/* <iframe width="100%" height="167" src="https://www.youtube.com/embed/aVS4W7GZSq0" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe> */}
+            <FlowItemFocus>
+              <img src={`https://picsum.photos/520/364/?a`} alt="placeholder" />
+            </FlowItemFocus>
           </FlowItem>
         ))}
       </FlowSlider>
@@ -105,9 +107,10 @@ function App() {
         loaderItem={LoaderItem}
         hasMore={hasMore}
         loadMore={loadMore}
-        title={<h4>Trending Now</h4>}
         itemsPerPage={6}
         gutter={8}
+        scaleFactor={1}
+        title={<h4>Trending Now</h4>}
       >
         {items.map(i => (
           <FlowItem key={i}>
@@ -124,6 +127,28 @@ function App() {
             </div>
           </FlowItem>
         ))}
+      </FlowSlider>
+
+      <FlowSlider
+        hasMore={false}
+        itemsPerPage={6}
+        gutter={8}
+        scaleFactor={1}
+        title={<h4>Trending Now</h4>}
+      >
+        <FlowItem>
+          <div
+            style={{
+              color: "#ffffff",
+              fontSize: "48px",
+              height: "160px",
+              lineHeight: "160px",
+              backgroundColor: "#0b0b0b"
+            }}
+          >
+           1 
+          </div>
+        </FlowItem>
       </FlowSlider>
     </div>
   );

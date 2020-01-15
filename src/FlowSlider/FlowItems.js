@@ -8,11 +8,6 @@ export const FlowItems = ({
   itemsPerPage,
   scaleFactor
 }) => {
-  // TODO
-  // add disable flag
-
-  // TODO - Can this be a HOC eg. withZoomFx
-
   const flowContext = useContext(FlowContext);
   const [items, setItems] = useState([]);
   const [translateAmount, setTranslateAmount] = useState(0);
@@ -24,7 +19,7 @@ export const FlowItems = ({
 
   useEffect(() => {
     setItems(
-      children.map(child => ({
+      React.Children.map(children, child => ({
         child,
         style: flowContext.itemBaseStyle
       }))
@@ -72,7 +67,7 @@ export const FlowItems = ({
             style.transform += ` translateX(${-translateAmount /
               scaleFactor}px)`;
           }
-        } 
+        }
 
         if (translateX !== 0) style.transform = `translateX(${translateX}px)`;
 
@@ -98,6 +93,7 @@ export const FlowItems = ({
         .filter(item => item.child.type === FlowItem)
         .map((item, i) => {
           return React.cloneElement(item.child, {
+            key: i,
             onMouseOver: () => onItemMouseOver(i),
             onMouseOut: () => onItemMouseOut(),
             style: item.style
